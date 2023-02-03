@@ -5,12 +5,27 @@
 // string: mystring --> string.prototype --> object.prototype --> null
 // Number: mynum -->Number.prototype--> object.prototype --> null
 // Boolean: mybool --> Boolean.prototype --> object.prototype --> null
+
+
 const Hangman = function (word,remainingguesses)
 {
     this.word=word.toLowerCase().split('')
     this.remainingGuesses=remainingguesses
     this.guessedletter=[]
+    this.staus='PLAYING'
 } 
+Hangman.prototype.calculateStatus=function()
+{
+    if(game1.remainingGuesses===0)
+    {
+        this.staus='FAILED'
+    }
+    else{
+    if(!game1.getPuzzle().includes('*'))
+    {
+        this.staus='FINISHED'
+    }}
+}
 Hangman.prototype.getPuzzle=function(){
     let puzzle=''
     this.word.forEach((letter) => {
@@ -35,16 +50,5 @@ Hangman.prototype.makeguess=function(guess){
     {
         this.remainingGuesses--
     }
-
+    this.calculateStatus()
 }
-const game1=new Hangman('cat',3)
-
-console.log(game1.getPuzzle())
-console.log(game1.remainingGuesses)
-
-window.addEventListener('keypress',function(e)
-{
-    const guess=e.key
-    game1.makeguess(guess)
-    console.log(game1.getPuzzle())
-    console.log(game1.remainingGuesses)})
