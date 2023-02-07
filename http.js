@@ -1,0 +1,5 @@
+const request= new XMLHttpRequest()
+console.log(request.statusText)
+// request.setRequestHeader(Headers='Access-Control-Allow-Origin')
+request.open('GET','https://puzzle.mead.io/puzzle')
+request.send()

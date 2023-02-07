@@ -5,71 +5,63 @@
 // string: mystring --> string.prototype --> object.prototype --> null
 // Number: mynum -->Number.prototype--> object.prototype --> null
 // Boolean: mybool --> Boolean.prototype --> object.prototype --> null
+class Hangman {
+    constructor(word, remainingGuesses) {
+        this.word = word.toLowerCase().split('')
+        this.remainingGuesses = remainingGuesses
+        this.guessedLetters = []
+        this.status = 'playing'
+    }
+    calculateStatus() {
+        const finished = this.word.every((letter) => this.guessedLetters.includes(letter) || letter === ' ')
 
-class Hangman{
-    constructor(word,remainingguesses)
-    {
-    this.word=word.toLowerCase().split('')
-    this.remainingGuesses=remainingguesses
-    this.guessedletter=[]
-    this.staus='PLAYING'
-    }
-    calculateStatus()
-    {
-        if(game1.remainingGuesses===0)
-        {
-            this.staus='FAILED'
+        if (this.remainingGuesses === 0) {
+            this.status = 'failed'
+        } else if (finished) {
+            this.status = 'finished'
+        } else {
+            this.status = 'playing'
         }
-        else{
-        if(!game1.getPuzzle().includes('*'))
-        {
-            this.staus='FINISHED'
-        }}
     }
-    getPuzzle()
-    {
-        let puzzle=''
+    get statusMessage() {
+        if (this.status === 'playing') {
+            return `Guesses left: ${this.remainingGuesses}`
+        } else if (this.status === 'failed') {
+            return `Nice try! The word was "${this.word.join('')}".`
+        } else {
+            return 'Great work! You guessed the word.'
+        }
+    }
+    get puzzle() {
+        let puzzle = ''
+
         this.word.forEach((letter) => {
-        if(this.guessedletter.includes(letter)||letter===' '){
-            puzzle+=letter
-        }
-        else
-        {
-            puzzle+='*'
-        }
-    })    
-    return puzzle;
-    }
-    statusMessage()
-    {
-        if(this.staus==='FAILED')
-        {
-            return`FAILED THE WORD WAS ${game1.word.join('')}`
-        }
-        else if(this.staus==='PLAYING')
-        {
-            return `GUESSES LEFT --> ${game1.remainingGuesses}`
-        }
-        else{return'CONGRATULATIONS YOU HAVE GUESSED THE WORD'}
-    }
-    makeguess(guess)
-    {
-    guess=guess.toLowerCase()
-    const isUnique=!this.guessedletter.includes(guess)
-    const isBadGuess=!this.word.includes(guess)
-    if(!this.staus==='PLAYING')
-    {
-        return
-    }
+            if (this.guessedLetters.includes(letter) || letter === ' ') {
+                puzzle += letter
+            } else {
+                puzzle += '*'
+            }
+        })
 
-    if(isUnique)
-    {
-    this.guessedletter.push(guess)}
-    if(isUnique && isBadGuess)
-    {
-        this.remainingGuesses--
+        return puzzle
     }
-    this.calculateStatus()   
-    }
+    makeGuess(guess) {
+        guess = guess.toLowerCase()
+        const isUnique = !this.guessedLetters.includes(guess)
+        const isBadGuess = !this.word.includes(guess)
 
+        if (this.status !== 'playing') {
+            return
+        }
+
+        if (isUnique) {
+            this.guessedLetters.push(guess)
+        }
+
+        if (isUnique && isBadGuess) {
+            this.remainingGuesses--
+        }
+
+        this.calculateStatus()
+    }
 }
