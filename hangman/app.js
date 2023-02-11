@@ -12,18 +12,29 @@ window.addEventListener('keypress', (e) => {
     guessesEl.textContent = game1.statusMessage
 })
 
-getPuzzle('2').then((puzzle) => {
-    console.log(puzzle)
-}, (err) => {
-    console.log(`Error: ${err}`)
-})
-
-// getCountry('MX').then((country) => {
-//     console.log(country.name)
+// getPuzzle('2').then((puzzle) => {
+//     console.log(puzzle)
 // }, (err) => {
 //     console.log(`Error: ${err}`)
 // })
 
+getCountry('MX').then((country) => {
+    console.log(country.name.common)
+}, (err) => {
+    console.log(`Error: ${err}`)
+})
+fetch(`https://puzzle.mead.io/puzzle`,{}).then((response)=>
+{
+    if(response.status===200)
+    {
+        return response.json()
+        
+    }
+    else{throw new Error('error!!!!!')}
+}).then((data)=>
+{
+    console.log(`this is from fetch ${data.puzzle}`)
+}).catch((error)=>{console.log(error)})
 
 // const request= new XMLHttpRequest()
 // request.addEventListener('readystatechange',(e)=>
